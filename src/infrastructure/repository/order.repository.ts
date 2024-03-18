@@ -24,6 +24,8 @@ export default class OrderRepository implements OrderRepositoryInterface {
       }
     )
   }
+  //observar que nesse ORM, alterar os campos que quiser no modelo e salvar.
+  //uma coisa é entidade e outra coisa é o model
   async update(entity: Order): Promise<void> {
     const { id, price, quantity, name } = entity.items[0]
     const orderItemModel = await OrderItemModel.findByPk(id)

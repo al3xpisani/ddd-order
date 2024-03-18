@@ -106,12 +106,11 @@ describe('Order repository test', () => {
 
     const updatedOrderItem = new OrderItem(
       '1',
-      product.name,
+      'Changed Product name',
       400,
       product.id,
       4
     )
-    updatedOrderItem.name = 'Changed Product name'
     const updatedOrder = new Order('123', '123', [updatedOrderItem])
     await orderRepository.update(updatedOrder)
 
