@@ -1,0 +1,9 @@
+// .eslintrc.json or .eslintrc.js
+{
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "prettier"],
+    "plugins": ["@typescript-eslint", "prettier"],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  }
+  
