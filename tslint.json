@@ -1,0 +1,13 @@
+{
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {},
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "rulesDirectory": [],
+    "eslint.validate": [
+        "typescript",
+        "typescriptreact"
+    ]
+}
