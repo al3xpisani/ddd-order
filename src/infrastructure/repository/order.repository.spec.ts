@@ -81,7 +81,6 @@ describe('Order repository test', () => {
       ]
     })
   })
-
   it('should update a existing order', async () => {
     const customerRepository = new CustomerRepository()
     const customer = new Customer('123', 'Customer 1')
@@ -133,5 +132,77 @@ describe('Order repository test', () => {
         }
       ]
     })
+  })
+  it('should find an Order', async () => {
+    const orderRepository = new OrderRepository()
+    const customerRepository = new CustomerRepository()
+    const customer = new Customer('123', 'Customer 1')
+    const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
+    customer.changeAddress(address)
+    await customerRepository.create(customer)
+
+    const productRepository = new ProductRepository()
+    const product = new Product('123', 'Product 111', 10)
+    await productRepository.create(product)
+
+    const orderItem = new OrderItem(
+      '1',
+      product.name,
+      product.price,
+      product.id,
+      2
+    )
+    const order = new Order('1', '123', [orderItem])
+    await orderRepository.create(order)
+    const foundOrder = await orderRepository.findById(order.id)
+
+    expect(foundOrder.id).toBe('1')
+    expect(foundOrder.customerId).toBe(customer.id)
+    expect(foundOrder.items[0].id).toBe(orderItem.id)
+    expect(foundOrder.items[0].name).toBe(product.name)
+    expect(foundOrder.items[0].price).toBe(orderItem.price * orderItem.quantity)
+    expect(foundOrder.items[0].productId).toBe(product.id)
+    expect(foundOrder.items[0].quantity).toBe(orderItem.quantity)
+  })
+  it('should find all Orders', async () => {
+    const orderRepository = new OrderRepository()
+    const customerRepository = new CustomerRepository()
+    const customer = new Customer('123', 'Customer 1')
+    const address = new Address('Street 1', 1, 'Zipcode 1', 'City 1')
+    customer.changeAddress(address)
+    await customerRepository.create(customer)
+
+    const productRepository = new ProductRepository()
+    const product = new Product('123', 'Product 111', 10)
+    await productRepository.create(product)
+
+    const orderItem = new OrderItem(
+      '1',
+      product.name,
+      product.price,
+      product.id,
+      2
+    )
+
+    const orderItem2 = new OrderItem(
+      '2',
+      product.name,
+      product.price,
+      product.id,
+      2
+    )
+    const order = new Order('1', '123', [orderItem, orderItem2])
+    await orderRepository.create(order)
+    const foundOrder = await orderRepository.findAll()
+
+    expect(foundOrder[0].id).toBe('1')
+    expect(foundOrder[0].customerId).toBe(customer.id)
+    expect(foundOrder[0].items[0].id).toBe(orderItem.id)
+    expect(foundOrder[0].items[0].name).toBe(product.name)
+    expect(foundOrder[0].items[0].price).toBe(
+      orderItem.price * orderItem.quantity
+    )
+    expect(foundOrder[0].items[0].productId).toBe(product.id)
+    expect(foundOrder[0].items[0].quantity).toBe(orderItem.quantity)
   })
 })
